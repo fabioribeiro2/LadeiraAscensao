@@ -10,7 +10,7 @@ public class BoulderScript : MonoBehaviour
 	private Vector2 saveVelocity;
 	private float saveMagnitude;
 	private Vector2 saveNormalized;
-	public int collisionNumber;
+	public int collisionPlatformBodyNumber;
 	public float potentialXVelocity;
 	private float potentialYVelocity;
 	private Rigidbody2D rigidbody;
@@ -23,12 +23,13 @@ public class BoulderScript : MonoBehaviour
 	private BoulderCollisionScript boulderCollisionScript;
 	public bool selfDestruct;
 	public float selfDestructTimer;
+	public bool isTouchingOtherColliders = false;
 
 	// Use this for initialization
 	void Start ()
 	{
 		rigidbody = GetComponent<Rigidbody2D> ();
-		collisionNumber = 0;		
+		collisionPlatformBodyNumber = 0;		
 		potentialXVelocity = Mathf.Abs (rigidbody.velocity.x);
 		GameObject boulderCollisionEvent = GameObject.Find ("BoulderCollisionEvent");
 		boulderCollisionScript = (BoulderCollisionScript)boulderCollisionEvent.GetComponent ("BoulderCollisionScript");
@@ -52,11 +53,11 @@ public class BoulderScript : MonoBehaviour
 //			potentialYVelocity = potentialYVelocity * 0.99F;
 //		}
 		currentYVelocity = rigidbody.velocity.y;
-		if (goingUp && rigidbody.velocity.y < 0 && collisionNumber == 0) {
+		if (goingUp && rigidbody.velocity.y < 0 && collisionPlatformBodyNumber == 0) {
 			goingUp = false;
 			goingDown = true;
 		}
-		if (goingDown && rigidbody.velocity.y > 0 && collisionNumber == 0) {
+		if (goingDown && rigidbody.velocity.y > 0 && collisionPlatformBodyNumber == 0) {
 			goingUp = true;
 			goingDown = false;
 		}
@@ -83,7 +84,7 @@ public class BoulderScript : MonoBehaviour
 	void OnCollisionExit2D (Collision2D coll)
 	{
 		if (coll.gameObject.tag == "MainPlatformBody") {
-			collisionNumber = 0;
+			collisionPlatformBodyNumber = 0;
 			GameObject obj = GameObject.FindGameObjectWithTag ("LeftSide");
 			Collider2D coll2 = (Collider2D)obj.GetComponent ("EdgeCollider2D");
 //			Debug.Log ("ta encostado? -> " + coll2.IsTouching (coll.collider));
@@ -96,9 +97,9 @@ public class BoulderScript : MonoBehaviour
 			}
 		}
 		
-		if (coll.gameObject.tag == "RightPlatform" || coll.gameObject.tag == "LeftPlatform") {
-			collisionNumber = 0;
-		}
+//		if (coll.gameObject.tag == "RightPlatform" || coll.gameObject.tag == "LeftPlatform") {
+//			collisionPlatformBodyNumber = 0;
+//		}
 //		Debug.Log ("exit speed = " + rigidbody.velocity.y);
 		
 //		if (coll.gameObject.tag == "RightSide") {
@@ -136,11 +137,11 @@ public class BoulderScript : MonoBehaviour
 		Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D> ();
 		if (coll.collider.tag == "MainPlatformBody") {	
 			Debug.Log ("aquele abraço");
-			collisionNumber++;
+			collisionPlatformBodyNumber++;
 			//			Debug.Log (potentialYVelocity);
 			//			Debug.Log (rigidbody.velocity.y);
-			Debug.Log ("aquele abraço numero colliders = " + collisionNumber);
-			if (collisionNumber == 1) {
+			Debug.Log ("aquele abraço numero colliders = " + collisionPlatformBodyNumber);
+			if (collisionPlatformBodyNumber == 1) {
 				//				Debug.Log (potentialYVelocity);
 				if (goingUp) {
 					Debug.Log ("aquele abraço 2");
@@ -155,31 +156,28 @@ public class BoulderScript : MonoBehaviour
 			}
 		}
 		//		Debug.Log ("jones");
-		if (coll.collider.tag == "LeftPlatform" || coll.collider.tag == "RightPlatform") {	
-			collisionNumber++;
+		if ((coll.collider.tag == "LeftPlatform" || coll.collider.tag == "RightPlatform") && !coll.collider.IsTouchingLayers (8)) {	
 			Debug.Log ("alo alo teresinha");
 			Debug.Log ("right =" + goingRight);
 			Debug.Log ("left =" + goingLeft);
-			Debug.Log ("alo alo teresinha numero colliders = " + collisionNumber);
+			Debug.Log ("alo alo teresinha esta tocando colliders = " + coll.collider.IsTouchingLayers (8));
 			//			Debug.Log (rigidbody.velocity.y);
-			if (collisionNumber == 1) {
-				if (coll.gameObject.transform.position.y > transform.position.y) {
-					rigidbody.velocity = new Vector2 (coll.collider.tag == "LeftPlatform" ? -potentialXVelocity : potentialXVelocity, -potentialYVelocity);
-					goingUp = false;
-					goingDown = true;
-				} else {
-					rigidbody.velocity = new Vector2 (coll.collider.tag == "LeftPlatform" ? -potentialXVelocity : potentialXVelocity, potentialYVelocity);
-					goingUp = true;
-					goingDown = false;
-				}
-				Debug.Log ("mudando direçao");
-				goingRight = rigidbody.velocity.x > 0;
-				goingLeft = !goingRight; 
-				Debug.Log ("direita : " + goingRight);
-				Debug.Log ("esquerda : " + goingLeft);
-				Debug.Log ("xVelo : " + rigidbody.velocity.x);
-				Debug.Log ("yVelo : " + rigidbody.velocity.y);
+			if (coll.gameObject.transform.position.y > transform.position.y) {
+				rigidbody.velocity = new Vector2 (coll.collider.tag == "LeftPlatform" ? -potentialXVelocity : potentialXVelocity, -potentialYVelocity);
+				goingUp = false;
+				goingDown = true;
+			} else {
+				rigidbody.velocity = new Vector2 (coll.collider.tag == "LeftPlatform" ? -potentialXVelocity : potentialXVelocity, potentialYVelocity);
+				goingUp = true;
+				goingDown = false;
 			}
+			Debug.Log ("mudando direçao");
+			goingRight = rigidbody.velocity.x > 0;
+			goingLeft = !goingRight; 
+			Debug.Log ("direita : " + goingRight);
+			Debug.Log ("esquerda : " + goingLeft);
+			Debug.Log ("xVelo : " + rigidbody.velocity.x);
+			Debug.Log ("yVelo : " + rigidbody.velocity.y);
 		}
 		if (coll.gameObject.tag == "Boulder") {		
 //			Debug.Log("collision tym! vel x = " + rigidbody.velocity.x + " vel y = " + rigidbody.velocity.y);

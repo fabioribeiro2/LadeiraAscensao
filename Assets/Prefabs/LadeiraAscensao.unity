@@ -148,7 +148,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 243964489}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 185.71312, y: 1148.91528, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 634316036}
@@ -166,7 +166,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 394747844}
   - 58: {fileID: 394747845}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftCollider
   m_TagString: LeftPlatform
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: -6.63999987, y: 0}
+  m_Offset: {x: -6.77699995, y: 0}
   serializedVersion: 2
   m_Radius: .349999994
 --- !u!1 &410782362
@@ -248,8 +248,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 410782362}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -131.899994, y: -1149, z: 0}
-  m_LocalScale: {x: 100, y: 79.3724976, z: 1}
+  m_LocalPosition: {x: 7.07000017, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 7.9124999, z: 1}
   m_Children: []
   m_Father: {fileID: 243964494}
   m_RootOrder: 1
@@ -291,8 +291,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 535691826}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -189, y: -1189, z: 0}
-  m_LocalScale: {x: 108.456619, y: 100, z: 1}
+  m_LocalPosition: {x: 0, y: -3.97000003, z: 0}
+  m_LocalScale: {x: 13.8915434, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 243964494}
   m_RootOrder: 3
@@ -334,8 +334,8 @@ EdgeCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   m_Points:
-  - {x: -.445779294, y: .00536499033}
-  - {x: .522024155, y: .00536499033}
+  - {x: -.506391227, y: .0053649745}
+  - {x: .511183023, y: .0053649745}
 --- !u!1 &536110945
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +362,7 @@ Transform:
   m_GameObject: {fileID: 536110945}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2, y: 10, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 0}
+  m_LocalScale: {x: .360000014, y: .360000014, z: 0}
   m_Children:
   - {fileID: 766853272}
   m_Father: {fileID: 0}
@@ -376,7 +376,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 6
+  m_GravityScale: 1
   m_FixedAngle: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -393,7 +393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3e1f977f33f1d4f9cdd399ef56fc05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionNumber: 0
+  collisionPlatformBodyNumber: 0
   potentialXVelocity: 0
   goingUp: 0
   goingDown: 0
@@ -403,6 +403,7 @@ MonoBehaviour:
   Boulder: {fileID: 0}
   selfDestruct: 0
   selfDestructTimer: 0
+  isTouchingOtherColliders: 0
 --- !u!58 &536110949
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -440,8 +441,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 569324243}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -185.600006, y: -1107.59998, z: 0}
-  m_LocalScale: {x: 102.008202, y: 100, z: 0}
+  m_LocalPosition: {x: 0, y: 3.97000003, z: 0}
+  m_LocalScale: {x: 14.0565062, y: 3, z: 0}
   m_Children: []
   m_Father: {fileID: 243964494}
   m_RootOrder: 2
@@ -509,8 +510,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 634316035}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -239.399994, y: -1149, z: 0}
-  m_LocalScale: {x: 101, y: 79.8981552, z: 1.00999999}
+  m_LocalPosition: {x: -7.07000017, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 8.10647869, z: 1}
   m_Children: []
   m_Father: {fileID: 243964494}
   m_RootOrder: 0
@@ -632,7 +633,7 @@ Transform:
   m_GameObject: {fileID: 880573196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .980000019, y: 1, z: 1}
+  m_LocalScale: {x: .992249966, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1101546371}
   m_RootOrder: 3
@@ -648,7 +649,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 1.60707951, y: .108999997}
+  m_Size: {x: 1.61930001, y: .108999997}
 --- !u!1 &1101546370
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,6 +658,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1101546371}
+  - 114: {fileID: 1101546372}
   m_Layer: 0
   m_Name: PlatformPiece
   m_TagString: Untagged
@@ -671,8 +673,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1101546370}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 0}
+  m_LocalPosition: {x: -6.6085, y: 3.21000004, z: 0}
+  m_LocalScale: {x: .486000001, y: .5, z: 0}
   m_Children:
   - {fileID: 1707901380}
   - {fileID: 394747844}
@@ -680,6 +682,17 @@ Transform:
   - {fileID: 880573197}
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!114 &1101546372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1101546370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2cbcc191bf39b4aa7861f5842f1993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1185163597
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,7 +875,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 39.5729065
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -881,7 +894,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1900407882}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .600000024, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: .850000024, y: .850000024, z: .850000024}
   m_Children: []
   m_Father: {fileID: 0}
@@ -895,7 +908,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1973164777}
   - 58: {fileID: 1973164778}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightCollider
   m_TagString: RightPlatform
   m_Icon: {fileID: 0}
@@ -924,6 +937,6 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 6.63999987, y: 0}
+  m_Offset: {x: 6.77699995, y: 0}
   serializedVersion: 2
   m_Radius: .349999994

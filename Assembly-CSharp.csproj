@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Prefabs\Scripts\BoulderCollisionScript.cs" />
      <Compile Include="Assets\Prefabs\Scripts\BoulderScript.cs" />
+     <Compile Include="Assets\Prefabs\Scripts\PlatformScript.cs" />
      <Compile Include="Assets\Prefabs\Scripts\RunnerScript.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

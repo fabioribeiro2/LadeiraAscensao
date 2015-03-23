@@ -1,9 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Prefabs\Scripts\RunnerScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Prefabs\Scripts\BoulderScript.cs">
     <Files>
-      <File FileName="Assets\Prefabs\Scripts\BoulderScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Prefabs\Scripts\RunnerScript.cs" Line="25" Column="85" />
+      <File FileName="Assets\Prefabs\Scripts\BoulderScript.cs" Line="161" Column="4" />
+      <File FileName="Assets\Prefabs\Scripts\RunnerScript.cs" Line="49" Column="39" />
       <File FileName="Assets\Prefabs\Scripts\BoulderCollisionScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

@@ -19,10 +19,10 @@ public class RunnerScript : MonoBehaviour
 		Boulder.transform.position = new Vector2 (10000, 10000);
 		
 		timeToNextBoulder = Random.Range (1,1);
-		for (int j=0; j<10; j++) {
-			for (int i=0; i<15; i++) {
+		for (int j=0; j<9; j++) {
+			for (int i=0; i<18; i++) {
 				if (i != 8) {
-					GameObject platformPiece = Instantiate (PlatformPiece, new Vector3 (-48.11f + 11.13f * i, 32.5f - 7.2f * j, 0), new Quaternion()) as GameObject;
+					GameObject platformPiece = Instantiate (PlatformPiece, new Vector3 (-6.6085f + 0.7801f * i, 3.15f - 0.795f * j, 0), new Quaternion()) as GameObject;
 				}
 			}
 		}
@@ -43,10 +43,10 @@ public class RunnerScript : MonoBehaviour
 			timeToNextBoulder = Random.Range (9999,9999);
 			
 			
-			GameObject boulder2 = Instantiate (Boulder, new Vector3 (-45 , 21 , 0), new Quaternion()) as GameObject;
+			GameObject boulder2 = Instantiate (Boulder, new Vector3 (-6 , 3.5f , 0), new Quaternion()) as GameObject;
 			Rigidbody2D rigidbody2 = boulder2.GetComponent<Rigidbody2D>();
 			//			Rigidbody2D rigidbody = boulder.rigidbody2D;
-			rigidbody2.AddForce(new Vector2(1000,0));
+			rigidbody2.AddForce(new Vector2(100,0));
 			boulderScript2 = (BoulderScript) boulder2.GetComponent("BoulderScript");
 			boulderScript2.goingDown = true;
 			boulderScript2.goingRight = true;
