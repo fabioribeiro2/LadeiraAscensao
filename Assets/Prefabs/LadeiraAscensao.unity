@@ -134,7 +134,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 243964494}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayingField
   m_TagString: PlayField
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - 4: {fileID: 410782364}
   - 212: {fileID: 410782363}
   - 68: {fileID: 410782365}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightSide
   m_TagString: RightSide
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ EdgeCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   m_Points:
-  - {x: -.0075015258, y: .498894632}
+  - {x: -.0169800129, y: .499065727}
   - {x: -.00553207379, y: -.498204082}
 --- !u!1 &535691826
 GameObject:
@@ -277,7 +277,7 @@ GameObject:
   - 4: {fileID: 535691827}
   - 212: {fileID: 535691828}
   - 68: {fileID: 535691829}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BottomSide
   m_TagString: BottomSide
   m_Icon: {fileID: 0}
@@ -347,7 +347,7 @@ GameObject:
   - 50: {fileID: 536110947}
   - 114: {fileID: 536110948}
   - 58: {fileID: 536110949}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boulder
   m_TagString: Boulder
   m_Icon: {fileID: 0}
@@ -376,7 +376,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 1
+  m_GravityScale: .300000012
   m_FixedAngle: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -393,7 +393,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3e1f977f33f1d4f9cdd399ef56fc05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionPlatformBodyNumber: 0
   potentialXVelocity: 0
   goingUp: 0
   goingDown: 0
@@ -402,8 +401,14 @@ MonoBehaviour:
   currentYVelocity: 0
   Boulder: {fileID: 0}
   selfDestruct: 0
-  selfDestructTimer: 0
+  savedYVelocity: 0
   isTouchingOtherColliders: 0
+  platformCollisionAmount: 0
+  edgesLayerMask: 0
+  platformBodyLayerMask: 0
+  platformSidesLayerMask: 0
+  boulderLayerMask: 0
+  touchingEdges: 0
 --- !u!58 &536110949
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -427,7 +432,7 @@ GameObject:
   - 4: {fileID: 569324244}
   - 212: {fileID: 569324245}
   - 68: {fileID: 569324246}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TopSide
   m_TagString: TopSide
   m_Icon: {fileID: 0}
@@ -496,7 +501,7 @@ GameObject:
   - 4: {fileID: 634316036}
   - 212: {fileID: 634316037}
   - 68: {fileID: 634316038}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftSide
   m_TagString: LeftSide
   m_Icon: {fileID: 0}
@@ -554,7 +559,7 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Points:
   - {x: .0202337578, y: -.492837787}
-  - {x: .0200000424, y: .493015021}
+  - {x: .0246400833, y: .493301243}
 --- !u!1 &766853270
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,7 +569,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 766853272}
   - 212: {fileID: 766853271}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: graphic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -618,7 +623,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 880573197}
   - 61: {fileID: 880573198}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BodyCollider
   m_TagString: MainPlatformBody
   m_Icon: {fileID: 0}
@@ -674,7 +679,7 @@ Transform:
   m_GameObject: {fileID: 1101546370}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.6085, y: 3.21000004, z: 0}
-  m_LocalScale: {x: .486000001, y: .5, z: 0}
+  m_LocalScale: {x: .486000001, y: .5, z: 1}
   m_Children:
   - {fileID: 1707901380}
   - {fileID: 394747844}
@@ -693,6 +698,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e2cbcc191bf39b4aa7861f5842f1993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colLeft: {fileID: 0}
+  colRight: {fileID: 0}
+  edgesLayerMask: 0
+  platformBodyLayerMask: 0
+  platformLeftLayerMask: 0
+  platformRightLayerMask: 0
+  boulderLayerMask: 0
+  edgesLayer: 0
+  plaformBodyLayer: 0
+  platformLeftLayer: 0
+  platformRightLayer: 0
+  boulderLayer: 0
+  isColliderOverlapLeft: {fileID: 0}
+  isColliderOverlapRight: {fileID: 0}
 --- !u!1 &1185163597
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,7 +830,7 @@ Transform:
   m_GameObject: {fileID: 1707901378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -.0329999998, z: 0}
-  m_LocalScale: {x: 3.49291492, y: 3.27824903, z: 0}
+  m_LocalScale: {x: 3.49291492, y: 3.27824903, z: 1}
   m_Children: []
   m_Father: {fileID: 1101546371}
   m_RootOrder: 0
@@ -908,7 +927,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1973164777}
   - 58: {fileID: 1973164778}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: RightCollider
   m_TagString: RightPlatform
   m_Icon: {fileID: 0}

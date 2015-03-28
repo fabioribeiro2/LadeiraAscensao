@@ -21,7 +21,7 @@ public class RunnerScript : MonoBehaviour
 		timeToNextBoulder = Random.Range (1,1);
 		for (int j=0; j<9; j++) {
 			for (int i=0; i<18; i++) {
-				if (i != 8) {
+				if (i != 80) {
 					GameObject platformPiece = Instantiate (PlatformPiece, new Vector3 (-6.6085f + 0.7801f * i, 3.15f - 0.795f * j, 0), new Quaternion()) as GameObject;
 				}
 			}
@@ -33,17 +33,17 @@ public class RunnerScript : MonoBehaviour
 	{
 		timeToNextBoulder -= Time.deltaTime;
 		if (timeToNextBoulder <= 0) {			
-//			GameObject boulder = Instantiate (Boulder, new Vector3 (-45 , 30 , 0), new Quaternion()) as GameObject;
-//			Rigidbody2D rigidbody = boulder.GetComponent<Rigidbody2D>();
-//			//			Rigidbody2D rigidbody = boulder.rigidbody2D;
-//			rigidbody.AddForce(new Vector2(1000,0));
-//			boulderScript = (BoulderScript) boulder.GetComponent("BoulderScript");
-//			boulderScript.goingDown = true;
-//			boulderScript.goingRight = true;
+			GameObject boulder = Instantiate (Boulder, new Vector3 (-6 , 3.5f , 0), new Quaternion()) as GameObject;
+			Rigidbody2D rigidbody = boulder.GetComponent<Rigidbody2D>();
+			//			Rigidbody2D rigidbody = boulder.rigidbody2D;
+			rigidbody.AddForce(new Vector2(100,0));
+			boulderScript = (BoulderScript) boulder.GetComponent("BoulderScript");
+			boulderScript.goingDown = true;
+			boulderScript.goingRight = true;
 			timeToNextBoulder = Random.Range (9999,9999);
 			
 			
-			GameObject boulder2 = Instantiate (Boulder, new Vector3 (-6 , 3.5f , 0), new Quaternion()) as GameObject;
+			GameObject boulder2 = Instantiate (Boulder, new Vector3 (-6 , 2.0f , 0), new Quaternion()) as GameObject;
 			Rigidbody2D rigidbody2 = boulder2.GetComponent<Rigidbody2D>();
 			//			Rigidbody2D rigidbody = boulder.rigidbody2D;
 			rigidbody2.AddForce(new Vector2(100,0));
@@ -51,13 +51,13 @@ public class RunnerScript : MonoBehaviour
 			boulderScript2.goingDown = true;
 			boulderScript2.goingRight = true;
 			
-//			GameObject boulder3 = Instantiate (Boulder, new Vector3 (-45 , 15 , 0), new Quaternion()) as GameObject;
-//			Rigidbody2D rigidbody3 = boulder3.GetComponent<Rigidbody2D>();
-//			//			Rigidbody2D rigidbody = boulder.rigidbody2D;
-//			rigidbody3.AddForce(new Vector2(1000,0));
-//			boulderScript3 = (BoulderScript) boulder3.GetComponent("BoulderScript");
-//			boulderScript3.goingDown = true;
-//			boulderScript3.goingRight = true;
+			GameObject boulder3 = Instantiate (Boulder, new Vector3 (-6 , -3.5f , 0), new Quaternion()) as GameObject;
+			Rigidbody2D rigidbody3 = boulder3.GetComponent<Rigidbody2D>();
+			//			Rigidbody2D rigidbody = boulder.rigidbody2D;
+			rigidbody3.AddForce(new Vector2(400,0));
+			boulderScript3 = (BoulderScript) boulder3.GetComponent("BoulderScript");
+			boulderScript3.goingDown = true;
+			boulderScript3.goingRight = true;
 		}
 	}
 }

@@ -25,15 +25,15 @@ TagManager:
   - UI
   - 
   - 
-  - PlatformSideCollider
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PlatformLeftCollider
+  - Boulder
+  - Edges
+  - PlatformBodyCollider
+  - PlatformRightCollider
+  - RightSide
+  - LeftSide
+  - TopSide
+  - BottomSide
   - 
   - 
   - 
