@@ -3,8 +3,9 @@ using System.Collections;
 
 public class BoulderCollisionScript : MonoBehaviour
 {
-
+	
 	private int boulderCount;
+	private float tempPotentialYVelocity;
 	private Vector2 tempVelocity;
 	private Vector2 tempLocation;
 	private bool tempGoingRight;
@@ -24,24 +25,26 @@ public class BoulderCollisionScript : MonoBehaviour
 	
 	}
 
-	public void makeBoulder (Vector2 velocity, Vector2 location, bool goingRight)
+	public void makeBoulder (Vector2 velocity, Vector2 location, bool goingRight, float potentialYVelocity)
 	{
 		boulderCount++;
+		Rigidbody2D rigidbody;
+		BoulderScript boulderScript;
 		if (boulderCount == 2) {
 			boulderCount = 0;
 			if (Mathf.Abs (velocity.y) > Mathf.Abs (tempVelocity.y)) {
 				boulderClone = Instantiate (boulder, new Vector3 (location.x, location.y, 0), new Quaternion (0, 0, 0, 0)) as GameObject;
+				rigidbody = boulderClone.GetComponent<Rigidbody2D> ();
+				rigidbody.velocity = new Vector2 (goingRight ? velocity.x : -velocity.x, velocity.y);
+				boulderScript = (BoulderScript)boulderClone.GetComponent ("BoulderScript");
+				boulderScript.potentialYVelocity = potentialYVelocity;
 			} else {				
 				boulderClone = Instantiate (boulder, new Vector3 (tempLocation.x, tempLocation.y, 0), new Quaternion (0, 0, 0, 0)) as GameObject;
-			}
-			Rigidbody2D rigidbody = boulderClone.GetComponent<Rigidbody2D> ();
-//			Debug.Log ("x1 = " + velocity.x + " x2 = " + tempVelocity.x);
-			if (Mathf.Abs (velocity.y) > Mathf.Abs (tempVelocity.y)) {
-				rigidbody.velocity = new Vector2 (goingRight ? velocity.x : -velocity.x, velocity.y);
-			} else {							
+				rigidbody = boulderClone.GetComponent<Rigidbody2D> ();
 				rigidbody.velocity = new Vector2 (tempGoingRight ? tempVelocity.x : -tempVelocity.x, tempVelocity.y);
+				boulderScript = (BoulderScript)boulderClone.GetComponent ("BoulderScript");
+				boulderScript.potentialYVelocity = tempPotentialYVelocity;
 			}
-			BoulderScript boulderScript = (BoulderScript)boulderClone.GetComponent ("BoulderScript");
 			boulderScript.goingRight = rigidbody.velocity.x > 0;
 			boulderScript.goingLeft = rigidbody.velocity.x < 0;
 			boulderScript.goingUp = rigidbody.velocity.y > 0;
@@ -50,6 +53,7 @@ public class BoulderCollisionScript : MonoBehaviour
 			tempLocation = location;
 			tempVelocity = velocity;
 			tempGoingRight = goingRight;
+			tempPotentialYVelocity = potentialYVelocity;
 		}
 	}
 }

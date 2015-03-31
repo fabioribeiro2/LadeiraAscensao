@@ -197,7 +197,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: -6.77699995, y: 0}
   serializedVersion: 2
-  m_Radius: .349999994
+  m_Radius: .289999992
 --- !u!1 &410782362
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,7 +376,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: .300000012
+  m_GravityScale: 3
   m_FixedAngle: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -394,6 +394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   potentialXVelocity: 0
+  potentialYVelocity: 0
   goingUp: 0
   goingDown: 0
   goingLeft: 0
@@ -409,6 +410,15 @@ MonoBehaviour:
   platformSidesLayerMask: 0
   boulderLayerMask: 0
   touchingEdges: 0
+  touchingRight: 0
+  touchingLeft: 0
+  touchingTop: 0
+  touchingBottom: 0
+  touchingPlatforms: 0
+  cornerYVelocity: 0
+  platformAmount: 0
+  grazingHit: .200000003
+  horizontalHit: .0500000007
 --- !u!58 &536110949
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -958,4 +968,4 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 6.77699995, y: 0}
   serializedVersion: 2
-  m_Radius: .349999994
+  m_Radius: .289999992

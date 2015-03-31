@@ -11,7 +11,7 @@ public class BoulderScript : MonoBehaviour
 	private float saveMagnitude;
 	private Vector2 saveNormalized;
 	public float potentialXVelocity;
-	public float potentialYVelocity;
+	public float potentialYVelocity = 3.0f;
 	private Rigidbody2D rigidbody;
 	public bool goingUp;
 	public bool goingDown;
@@ -34,9 +34,16 @@ public class BoulderScript : MonoBehaviour
 	public bool touchingLeft = false;
 	public bool touchingTop = false;
 	public bool touchingBottom = false;
-	public bool touchingPlatforms = false;
 	public float cornerYVelocity;
-	public int platformAmount;
+	public float grazingHit = 0.2f;
+	public float horizontalHit = 0.05f;
+	public float maxYVelocity;
+	public float calculatedVelocity;
+	public bool touchingBody;
+	public bool touchingLeftPlatform;
+	public bool touchingRightPlatform;
+
+
 
 	// Use this for initialization
 	void Start ()
@@ -53,7 +60,11 @@ public class BoulderScript : MonoBehaviour
 		GameObject boulderCollisionEvent = GameObject.Find ("BoulderCollisionEvent");
 		boulderCollisionScript = (BoulderCollisionScript)boulderCollisionEvent.GetComponent ("BoulderCollisionScript");
 		collider = (CircleCollider2D)transform.GetComponent ("CircleCollider2D");
-		platformAmount = 0;
+		maxYVelocity = 3.0f;
+		touchingBody = false;
+		touchingLeftPlatform = false;
+		touchingRightPlatform = false;
+		potentialXVelocity = 2;
 	}
 	
 	// Update is called once per frame
@@ -65,34 +76,44 @@ public class BoulderScript : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		if (potentialXVelocity < 3) {
-			potentialXVelocity = 3;
+		if (potentialXVelocity < 2) {
+			potentialXVelocity = 2;
 		}
-		potentialYVelocity = Mathf.Abs (rigidbody.velocity.y);
-		if (potentialYVelocity > 8) {
-			potentialYVelocity = potentialYVelocity * 0.4F;
-		} else if (potentialYVelocity > 3) {
-			potentialYVelocity = potentialYVelocity * 1.105F;
-		} else {			
-			potentialYVelocity = potentialYVelocity * 1.121F;
-		}
+
+//		if (potentialYVelocity > 8) {
+//			potentialYVelocity = potentialYVelocity * 1F;
+//		} else if (potentialYVelocity > 3) {
+//			potentialYVelocity = potentialYVelocity * 1.005F;
+//		} else {			
+//			potentialYVelocity = potentialYVelocity * 1.021F;
+//		}
 		currentYVelocity = rigidbody.velocity.y;
-		if (goingUp && rigidbody.velocity.y <= 0 && !touchingPlatforms) {
+
+		if (goingUp && rigidbody.velocity.y <= 0 && !touchingBody && !touchingBottom) {
 			goingUp = false;
 			goingDown = true;
 		}
-		if (goingDown && rigidbody.velocity.y > 0 && !touchingPlatforms) {
+
+		if (goingDown && rigidbody.velocity.y > 0 && !touchingBody && !touchingBottom) {
 			goingUp = true;
 			goingDown = false;
 		}
-		
-		if (Mathf.Abs (rigidbody.velocity.x) > potentialXVelocity) {
-			potentialXVelocity = Mathf.Abs (rigidbody.velocity.x);
-		}	
 
-		if (Mathf.Abs (rigidbody.velocity.x) < potentialXVelocity) {
-			rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, rigidbody.velocity.y);
-		}	
+		if (!touchingBody && !touchingBottom && !touchingTop) {
+			if (goingUp) {
+				potentialYVelocity -= rigidbody.gravityScale * Time.fixedDeltaTime;
+			} else {			
+				potentialYVelocity += rigidbody.gravityScale * Time.fixedDeltaTime;
+			}
+		}
+
+		if (potentialYVelocity < 0) {
+			potentialYVelocity = 0;
+		}
+
+		calculatedVelocity = Mathf.Min (Mathf.Abs (potentialYVelocity), Mathf.Abs (maxYVelocity));
+
+		rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, goingUp ? calculatedVelocity : -calculatedVelocity);
 
 	}
 
@@ -101,10 +122,7 @@ public class BoulderScript : MonoBehaviour
 		float maxVelocity = Mathf.Max (Mathf.Abs (savedYVelocity), Mathf.Abs (currentYVelocity), Mathf.Abs (cornerYVelocity));
 
 		if (coll.gameObject.tag == "MainPlatformBody") {
-			platformAmount--;
-			if (platformAmount == 0) {
-				touchingPlatforms = false;
-			}
+			touchingBody = false;
 			if (goingUp) { 
 				rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, maxVelocity);
 			} else {
@@ -112,11 +130,12 @@ public class BoulderScript : MonoBehaviour
 			}
 		}
 		
-		if (coll.gameObject.tag == "RightPlatform" || coll.gameObject.tag == "LeftPlatform") {	
-			platformAmount--;
-			if (platformAmount == 0) {
-				touchingPlatforms = false;
-			}
+		if (coll.gameObject.tag == "RightPlatform") {
+				touchingRightPlatform = false;
+		}
+
+		if (coll.gameObject.tag == "LeftPlatform") {
+				touchingLeftPlatform = false;
 		}
 		
 		if (coll.gameObject.tag == "LeftSide") {
@@ -193,133 +212,138 @@ public class BoulderScript : MonoBehaviour
 			touchingBottom = true;
 		}
 		
-		if (coll.collider.tag == "RightPlatform") {		
-			touchingPlatforms = true;
-			GameObject platform = coll.transform.parent.gameObject;
-			PlatformScript platformScript = (PlatformScript)platform.GetComponent ("PlatformScript");
-			if (!platformScript.isColliderOverlapRight) {
-				goingRight = true;
-				goingLeft = false;
-			}
+		if (coll.collider.tag == "RightPlatform") {					
+			touchingRightPlatform = true;		
+			GameObject platform = coll.transform.parent.gameObject;	
+			PlatformScript platformScript = (PlatformScript)platform.GetComponent ("PlatformScript");	
+			if (!platformScript.isColliderOverlapRight) {		
+				goingRight = true;			
+				goingLeft = false;		
+			}	
 		}		
-
-		if (coll.collider.tag == "LeftPlatform") {		
-			touchingPlatforms = true;		
-			GameObject platform = coll.transform.parent.gameObject;
-			PlatformScript platformScript = (PlatformScript)platform.GetComponent ("PlatformScript");
-			if (!platformScript.isColliderOverlapLeft) {
-				goingRight = false;
-				goingLeft = true;
-			}
-		}
-
-		if (coll.collider.tag == "MainPlatformBody") {
-			if (transform.position.y > coll.gameObject.transform.position.y) {
-				goingUp = true;
-				goingDown = false;
-			} else {
-				goingUp = false;
-				goingDown = true;
-			}
-			touchingPlatforms = true;			
-			if (goingUp) { 
-				rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, maxVelocity);
-			} else {
-				rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, -maxVelocity);
-			}
-		}
+		if (coll.collider.tag == "LeftPlatform") {			
+			touchingLeftPlatform = true;		
+			GameObject platform = coll.transform.parent.gameObject;		
+			PlatformScript platformScript = (PlatformScript)platform.GetComponent ("PlatformScript");	
+			if (!platformScript.isColliderOverlapLeft) {	
+				goingRight = false;		
+				goingLeft = true;	
+			}	
+		}		
+		if (coll.collider.tag == "MainPlatformBody") {		
+			if (transform.position.y > coll.gameObject.transform.position.y) {		
+				goingUp = true;		
+				goingDown = false;		
+			} else {		
+				goingUp = false;		
+				goingDown = true;		
+			}		
+			touchingBody = true;		
+			if (goingUp) { 		
+				rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, maxVelocity);		
+			} else {		
+				rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, -maxVelocity);		
+			}	
+		}	
 	}
 
 	void OnCollisionEnter2D (Collision2D coll)
-	{
+	{	
+
 		if (coll.collider.tag == "MainPlatformBody") {	
-			platformAmount++;
-			touchingPlatforms = true;
+			touchingBody = true;
 			if (transform.position.y > coll.gameObject.transform.position.y + collider.radius / 3.5f || transform.position.y < coll.gameObject.transform.position.y - collider.radius / 3.5f) {
-
-//				Debug.Log ("changing saved velocity to = " + rigidbody.velocity.y);
-				savedYVelocity = rigidbody.velocity.y;
-				if (!touchingRight && !touchingLeft && !touchingPlatforms) {
-					cornerYVelocity = rigidbody.velocity.y;
-				}				
-				if (transform.position.y < coll.gameObject.transform.position.y) { //boulder is coming from below
-					rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, -potentialYVelocity);
-					goingUp = false;
-					goingDown = true;
-				} else { 														  //boulder is coming from above
-					rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, potentialYVelocity);
-					goingUp = true;
-					goingDown = false;
-				}
-			}
-		}
-
-		if ((coll.collider.tag == "LeftPlatform" || coll.collider.tag == "RightPlatform")) {
-			platformAmount++;
-			if (!touchingRight && !touchingLeft && !touchingPlatforms) {
-				cornerYVelocity = rigidbody.velocity.y;
-			}					
-			touchingPlatforms = true;
-			GameObject platform = coll.transform.parent.gameObject;
-			PlatformScript platformScript = (PlatformScript)platform.GetComponent ("PlatformScript");
-			if ((coll.collider.tag == "LeftPlatform" && !platformScript.isColliderOverlapLeft) || (coll.collider.tag == "RightPlatform" && !platformScript.isColliderOverlapRight)) {
-				rigidbody.velocity = new Vector2 (coll.collider.tag == "LeftPlatform" ? -potentialXVelocity : potentialXVelocity, currentYVelocity);
-
-				Debug.Log ("mudando direçao");
-				goingRight = rigidbody.velocity.x > 0;
-				goingLeft = !goingRight; 
-			}
-		}
-
-		if (coll.gameObject.tag == "Boulder") {		
-			Vector2 velocity = new Vector2 (potentialXVelocity, currentYVelocity);
-			Vector2 location = new Vector2 (transform.position.x, transform.position.y);
-			Destroy (this.gameObject);
-			Destroy (coll.gameObject);
-			boulderCollisionScript.makeBoulder (velocity, location, goingRight);
-		}
-
-		if (coll.gameObject.tag == "RightSide") {
-			savedYVelocity = rigidbody.velocity.y;
-			if (!touchingPlatforms && !touchingRight && !touchingBottom && !touchingTop) {
-				cornerYVelocity = rigidbody.velocity.y;
-			}
+				savedYVelocity = rigidbody.velocity.y;	
+				if (!touchingRight && !touchingLeft && !touchingBody && !touchingLeftPlatform && !touchingRightPlatform) {	
+					cornerYVelocity = rigidbody.velocity.y;	
+				}						
+				if (transform.position.y < coll.gameObject.transform.position.y) { //boulder is coming from below		
+					rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, -Mathf.Min (Mathf.Abs (potentialYVelocity), Mathf.Abs (maxYVelocity)));		
+					goingUp = false;			
+					goingDown = true;	
+				} else { //boulder is coming from above		
+					rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, Mathf.Min (Mathf.Abs (potentialYVelocity), Mathf.Abs (maxYVelocity)));		
+					goingUp = true;			
+					goingDown = false;		
+				}		
+			}	
+		}	
+		
+		if (coll.collider.tag == "RightPlatform") {		
+			if (!touchingRight && !touchingLeft && !touchingBody && !touchingLeftPlatform && !touchingRightPlatform) {		
+				cornerYVelocity = rigidbody.velocity.y;		
+			}						
+			GameObject platform = coll.transform.parent.gameObject;	
+			PlatformScript platformScript = (PlatformScript)platform.GetComponent ("PlatformScript");		
+			if (!platformScript.isColliderOverlapRight && !touchingBody && !touchingRightPlatform) {									
+				rigidbody.velocity = new Vector2 (potentialXVelocity, currentYVelocity);			
+				goingRight = true;	
+				goingLeft = false; 	
+			}			
 			touchingRight = true;
-			rigidbody.velocity = new Vector2 (-potentialXVelocity, currentYVelocity);
-			goingRight = false;
-			goingLeft = true;
-		}
-
-		if (coll.gameObject.tag == "LeftSide") {
-			savedYVelocity = rigidbody.velocity.y;				
-			if (!touchingPlatforms && !touchingLeft && !touchingBottom && !touchingTop) {
-				cornerYVelocity = rigidbody.velocity.y;
-			}
+		}	
+		
+		if ((coll.collider.tag == "LeftPlatform")) {		
+			if (!touchingRight && !touchingLeft && !touchingBody && !touchingLeftPlatform && !touchingRightPlatform) {		
+				cornerYVelocity = rigidbody.velocity.y;		
+			}						
+			GameObject platform = coll.transform.parent.gameObject;	
+			PlatformScript platformScript = (PlatformScript)platform.GetComponent ("PlatformScript");		
+			if (!platformScript.isColliderOverlapLeft && !touchingBody && !touchingLeftPlatform) {	
+				rigidbody.velocity = new Vector2 (-potentialXVelocity, currentYVelocity);			
+				goingRight = rigidbody.velocity.x > 0;	
+				goingLeft = !goingRight; 	
+			}			
 			touchingLeft = true;
-			rigidbody.velocity = new Vector2 (potentialXVelocity, currentYVelocity);
-			goingRight = true;
-			goingLeft = false;
-		}
+		}	
 
-		if (coll.gameObject.tag == "TopSide") {
-			savedYVelocity = rigidbody.velocity.y;				
-			if (!touchingPlatforms && !touchingLeft && !touchingBottom && !touchingTop) {
-				cornerYVelocity = rigidbody.velocity.y;
-			}
-			touchingTop = true;
-			rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, -currentYVelocity);
-			goingDown = true;
-			goingUp = false;
-		}
-		if (coll.gameObject.tag == "BottomSide") {
-			savedYVelocity = rigidbody.velocity.y;				
-			if (!touchingPlatforms && !touchingLeft && !touchingBottom && !touchingTop) {
-				cornerYVelocity = rigidbody.velocity.y;
-			}
-			touchingBottom = true;
-			rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, currentYVelocity);
-			goingDown = false;
-			goingUp = true;
-		}
+		if (coll.gameObject.tag == "Boulder") {			
+			Vector2 velocity = new Vector2 (potentialXVelocity, currentYVelocity);		
+			Vector2 location = new Vector2 (transform.position.x, transform.position.y);		
+			Destroy (this.gameObject);	
+			Destroy (coll.gameObject);		
+			boulderCollisionScript.makeBoulder (velocity, location, goingRight, potentialYVelocity);	
+		}	
+
+		if (coll.gameObject.tag == "RightSide") {		
+			savedYVelocity = rigidbody.velocity.y;	
+			if (!touchingBody && !touchingLeftPlatform && !touchingRightPlatform && !touchingRight && !touchingBottom && !touchingTop) {			
+				cornerYVelocity = rigidbody.velocity.y;		
+			}		
+			touchingRight = true;		
+			rigidbody.velocity = new Vector2 (-potentialXVelocity, currentYVelocity);		
+			goingRight = false;		
+			goingLeft = true;	
+		}	
+		if (coll.gameObject.tag == "LeftSide") {	
+			savedYVelocity = rigidbody.velocity.y;	
+			if (!touchingBody && !touchingLeftPlatform && !touchingRightPlatform && !touchingLeft && !touchingBottom && !touchingTop) {		
+				cornerYVelocity = rigidbody.velocity.y;		
+			}	
+			touchingLeft = true;		
+			rigidbody.velocity = new Vector2 (potentialXVelocity, currentYVelocity);		
+			goingRight = true;		
+			goingLeft = false;	
+		}	
+		if (coll.gameObject.tag == "TopSide") {	
+			savedYVelocity = rigidbody.velocity.y;	
+			if (!touchingBody && !touchingLeftPlatform && !touchingRightPlatform && !touchingLeft && !touchingBottom && !touchingTop) {	
+				cornerYVelocity = rigidbody.velocity.y;	
+			}		
+			touchingTop = true;		
+			rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, -Mathf.Min (Mathf.Abs (potentialYVelocity), Mathf.Abs (maxYVelocity)));	
+			goingDown = true;		
+			goingUp = false;	
+		}	
+		if (coll.gameObject.tag == "BottomSide") {		
+			savedYVelocity = rigidbody.velocity.y;			
+			if (!touchingBody && !touchingLeftPlatform && !touchingRightPlatform && !touchingLeft && !touchingBottom && !touchingTop) {		
+				cornerYVelocity = rigidbody.velocity.y;		
+			}		
+			touchingBottom = true;		
+			rigidbody.velocity = new Vector2 (goingRight ? potentialXVelocity : -potentialXVelocity, Mathf.Min (Mathf.Abs (potentialYVelocity), Mathf.Abs (maxYVelocity)));		
+			goingDown = false;		
+			goingUp = true;	
+		}	
 	}
 }
