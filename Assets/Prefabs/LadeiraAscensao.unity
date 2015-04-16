@@ -291,8 +291,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 535691826}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.97000003, z: 0}
-  m_LocalScale: {x: 13.8915434, y: 3, z: 1}
+  m_LocalPosition: {x: .0299999993, y: -3.97000003, z: 0}
+  m_LocalScale: {x: 13.6499996, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 243964494}
   m_RootOrder: 3
@@ -393,13 +393,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3e1f977f33f1d4f9cdd399ef56fc05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  potentialXVelocity: 0
+  fixedMaxXVelocity: 0
+  fixedMaxYVelocity: 0
+  maxXVelocity: 0
   potentialYVelocity: 0
   goingUp: 0
   goingDown: 0
   goingLeft: 0
   goingRight: 0
   currentYVelocity: 0
+  currentXVelocity: 0
   Boulder: {fileID: 0}
   selfDestruct: 0
   savedYVelocity: 0
@@ -414,11 +417,15 @@ MonoBehaviour:
   touchingLeft: 0
   touchingTop: 0
   touchingBottom: 0
-  touchingPlatforms: 0
   cornerYVelocity: 0
-  platformAmount: 0
-  grazingHit: .200000003
-  horizontalHit: .0500000007
+  maxYVelocity: 0
+  calculatedVelocity: 0
+  touchingBody: 0
+  touchingLeftPlatform: 0
+  touchingRightPlatform: 0
+  boulderLevel: 0
+  xVelocityIncrement: 0
+  yVelocityIncrement: 0
 --- !u!58 &536110949
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -456,8 +463,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 569324243}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.97000003, z: 0}
-  m_LocalScale: {x: 14.0565062, y: 3, z: 0}
+  m_LocalPosition: {x: .0299999993, y: 3.97000003, z: 0}
+  m_LocalScale: {x: 13.6499996, y: 3, z: 0}
   m_Children: []
   m_Father: {fileID: 243964494}
   m_RootOrder: 2
@@ -525,8 +532,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 634316035}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.07000017, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 8.10647869, z: 1}
+  m_LocalPosition: {x: -7.07000017, y: -.0199999996, z: 0}
+  m_LocalScale: {x: 3, y: 8.02000046, z: 1}
   m_Children: []
   m_Father: {fileID: 243964494}
   m_RootOrder: 0
@@ -569,7 +576,7 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Points:
   - {x: .0202337578, y: -.492837787}
-  - {x: .0246400833, y: .493301243}
+  - {x: .0181144085, y: .493301243}
 --- !u!1 &766853270
 GameObject:
   m_ObjectHideFlags: 0

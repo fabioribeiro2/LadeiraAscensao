@@ -8,6 +8,7 @@ public class BoulderCollisionScript : MonoBehaviour
 	private float tempPotentialYVelocity;
 	private Vector2 tempVelocity;
 	private Vector2 tempLocation;
+	private int tempBoulderLevel;
 	private bool tempGoingRight;
 	private GameObject boulder;
 	private GameObject boulderClone;
@@ -25,14 +26,16 @@ public class BoulderCollisionScript : MonoBehaviour
 	
 	}
 
-	public void makeBoulder (Vector2 velocity, Vector2 location, bool goingRight, float potentialYVelocity)
+	public void makeBoulder (Vector2 velocity, Vector2 location, bool goingRight, float potentialYVelocity, int boulderLevel)
 	{
 		boulderCount++;
 		Rigidbody2D rigidbody;
 		BoulderScript boulderScript;
+		Debug.Log ("velo = " + velocity.y);
+		Debug.Log ("pot velo = " + potentialYVelocity);
 		if (boulderCount == 2) {
 			boulderCount = 0;
-			if (Mathf.Abs (velocity.y) > Mathf.Abs (tempVelocity.y)) {
+			if (boulderLevel > tempBoulderLevel) {
 				boulderClone = Instantiate (boulder, new Vector3 (location.x, location.y, 0), new Quaternion (0, 0, 0, 0)) as GameObject;
 				rigidbody = boulderClone.GetComponent<Rigidbody2D> ();
 				rigidbody.velocity = new Vector2 (goingRight ? velocity.x : -velocity.x, velocity.y);
@@ -49,11 +52,17 @@ public class BoulderCollisionScript : MonoBehaviour
 			boulderScript.goingLeft = rigidbody.velocity.x < 0;
 			boulderScript.goingUp = rigidbody.velocity.y > 0;
 			boulderScript.goingDown = rigidbody.velocity.y < 0;
+			if (boulderLevel == tempBoulderLevel) {
+				boulderScript.boulderLevel = boulderLevel + 1;
+			} else {
+				boulderScript.boulderLevel = Mathf.Max(boulderLevel, tempBoulderLevel);
+			}
 		} else {
 			tempLocation = location;
 			tempVelocity = velocity;
 			tempGoingRight = goingRight;
 			tempPotentialYVelocity = potentialYVelocity;
+			tempBoulderLevel = boulderLevel;
 		}
 	}
 }
