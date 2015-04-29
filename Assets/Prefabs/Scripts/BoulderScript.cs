@@ -67,10 +67,10 @@ public class BoulderScript : MonoBehaviour
 		touchingBody = false;
 		touchingLeftPlatform = false;
 		touchingRightPlatform = false;
-		fixedMaxXVelocity = 1.5f;
-		fixedMaxYVelocity = 1.3f;
-		xVelocityIncrement = 0.15f;
-		yVelocityIncrement = 0.13f;
+		fixedMaxXVelocity = 1.55f;
+		fixedMaxYVelocity = 1.2f;
+		xVelocityIncrement = 0.155f;
+		yVelocityIncrement = 0.12f;
 		maxXVelocity = fixedMaxXVelocity + boulderLevel * xVelocityIncrement;
 		maxYVelocity = fixedMaxYVelocity + boulderLevel * yVelocityIncrement;
 	}
@@ -120,7 +120,7 @@ public class BoulderScript : MonoBehaviour
 
 		calculatedVelocity = Mathf.Min (Mathf.Abs (potentialYVelocity), Mathf.Abs (maxYVelocity));
 
-		rigidbody.velocity = new Vector2 (goingRight ? maxXVelocity : -maxXVelocity, goingUp ? calculatedVelocity * 1.3f : -calculatedVelocity);
+		rigidbody.velocity = new Vector2 (goingRight ? maxXVelocity : -maxXVelocity, goingUp ? calculatedVelocity * 1.85f : -calculatedVelocity);
 
 	}
 

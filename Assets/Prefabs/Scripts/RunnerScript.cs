@@ -22,7 +22,7 @@ public class RunnerScript : MonoBehaviour
 		for (int j=0; j<9; j++) {
 			for (int i=0; i<18; i++) {
 				if (i % 2 != 0) {
-					GameObject platformPiece = Instantiate (PlatformPiece, new Vector3 (-6.6085f + 0.7801f * i, 3.15f - 0.795f * j, 0), new Quaternion()) as GameObject;
+					GameObject platformPiece = Instantiate (PlatformPiece, new Vector3 (-6.6085f + 0.8501f * i, 3.15f - 0.855f * j, 0), new Quaternion()) as GameObject;
 				}
 			}
 		}
